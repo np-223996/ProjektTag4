@@ -9,7 +9,7 @@
         @focusout="editEntry"
         ref="input"
       ></v-text-field>
-      <v-rating v-model="entry.rating" background-color="black" color="#000000" @input="editRating"></v-rating>
+      <v-rating v-model="entry.rating" background-color="black" color="#000000" @click="editRating"></v-rating>
       <v-btn @click="removeEntry">Remove</v-btn>
     </div>
   </template>
