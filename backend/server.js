@@ -43,8 +43,33 @@ app.put("/profs/:id", function (req, res) {
         });
     });
 });
-app.delete("/profs/:id", function (req, res) {
-    fs.readFile(filename, "utf8", function (err, data) {
+app.delete("/profs/:id", async function (req, res) {
+
+    try {
+        await client.connect();
+        // database and collection code goes here
+        // delete code goes here
+        // amount deleted code goes here
+        // database and collection code goes here
+        const db = client.db("ratings");
+        const coll = db.collection("profratings");
+
+        const doc = {
+            id: req,
+        };
+
+        const result = await coll.deleteMany(doc);
+
+        // amount deleted code goes here
+        console.log("Number of documents deleted: " + result.deletedCount);
+
+    } finally {
+        // Ensures that the client will close when you finish/error
+        await client.close();
+    }
+    run().catch(console.dir);
+
+    /*fs.readFile(filename, "utf8", function (err, data) {
         let dataAsObject = JSON.parse(data);
         dataAsObject.splice(req.params.id, 1);
         fs.writeFile(filename, JSON.stringify(dataAsObject), () => {
@@ -53,8 +78,10 @@ app.delete("/profs/:id", function (req, res) {
             });
             res.end(JSON.stringify(dataAsObject));
         });
-    });
+    });*/
 });
+
+
 app.post("/profs", function (req, res) {
     fs.readFile(filename, "utf8", function (err, data) {
         let dataAsObject = JSON.parse(data);
@@ -71,14 +98,32 @@ app.post("/profs", function (req, res) {
         });
     });
 });
-app.delete("/profs", function (req, res) {
-    fs.writeFile(filename, "[]", function (err) {
+app.delete("/profs", async function (req, res) {
+
+    try {
+        await client.connect();
+
+        const db = client.db("ratings");
+        const coll = db.collection("profratings");
+
+        const result = await coll.deleteMany(doc);
+
+        // amount deleted code goes here
+        console.log("Number of documents deleted: " + result.deletedCount);
+
+    } finally {
+        // Ensures that the client will close when you finish/error
+        await client.close();
+    }
+    run().catch(console.dir);
+
+    /*fs.writeFile(filename, "[]", function (err) {
         if (err) {
             console.error(err);
             res.status(500).json({ error: "Failed to delete records" });
         } else {
             res.status(200).json({ message: "All records deleted successfully" });
         }
-    });
+    });*/
 });
 app.listen(port, () => console.log(`Server listening on port ${port}!`));
