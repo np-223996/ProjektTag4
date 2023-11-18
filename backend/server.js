@@ -89,6 +89,9 @@ app.delete("/profs/:id",async function (req, res) {
         const results = await collection.find().sort({id:1}).toArray();
         const myArray = results.map((document) => document);
         res.end(JSON.stringify(myArray))
+        if(JSON.stringify(myArray)=="[]"){
+            id=0;
+        }
     }catch{
         res.status=500
     }
